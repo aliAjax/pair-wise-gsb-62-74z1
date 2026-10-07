@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common'
 import { Component, inject } from '@angular/core'
+import { RouterLink } from '@angular/router'
 import { MatButtonModule } from '@angular/material/button'
 import { MatTableModule } from '@angular/material/table'
 import { Store } from '@ngrx/store'
 import { map } from 'rxjs'
 import { SpatialMapComponent } from '../components/spatial-map.component'
-import { selectAnomalies, selectDataset, selectPoints } from '../store/tailings.selectors'
+import { selectActiveTrial, selectAnomalies, selectDataset, selectPoints } from '../store/tailings.selectors'
 
 @Component({
   selector: 'app-dashboard-page',
@@ -13,6 +14,10 @@ import { selectAnomalies, selectDataset, selectPoints } from '../store/tailings.
   imports: [CommonModule, MatButtonModule, MatTableModule, SpatialMapComponent],
   template: `
     <section class="page">
+      <a *ngIf="trial$ | async as trial" class="trial-banner" routerLink="/thresholds">
+        <b>阈值试算进行中 · 批次 {{ trial.batchId }}</b>
+        <span>候选差异：新增{{ count(trial, '新增') }} · 消失{{ count(trial, '消失') }} · 升级{{ count(trial, '升级') }} · 降级{{ count(trial, '降级') }} · 保留{{ count(trial, '保留') }}；现行阈值与复核、审批、审计记录均未改动<ng-container *ngIf="trial.readingsChanged">（已接入新读数并按最新快照重算）</ng-container>。前往确认整批切换 →</span>
+      </a>
       <div class="metrics">
         <article><span>监测点</span><strong>{{ pointCount$ | async }}</strong><small>位移、水位、渗流、降雨</small></article>
         <article><span>异常点</span><strong>{{ abnormalCount$ | async }}</strong><small>阈值引擎自动标记</small></article>
@@ -39,6 +44,7 @@ import { selectAnomalies, selectDataset, selectPoints } from '../store/tailings.
     .metrics article { padding: 17px 19px; border-right: 1px solid #e2e8e6; } .metrics article:last-child { border: 0; }
     .metrics span, .metrics strong, .metrics small { display: block; } .metrics span { color: #72807d; font-size: 12px; } .metrics strong { font-size: 27px; color: #245060; margin: 6px 0; } .metrics small { color: #98a4a0; font-size: 10px; }
     .threshold-band { background: white; border: 1px solid #d9e1df; margin-top: 15px; padding: 16px; } .threshold-band h2 { margin: 0 0 5px; font-size: 17px; } .threshold-band p { color: #72807d; font-size: 12px; margin: 0 0 12px; } table { width: 100%; }
+    .trial-banner { display: grid; gap: 4px; background: #213a44; color: white; padding: 12px 16px; margin-bottom: 15px; text-decoration: none; border-left: 4px solid #d2a53f; } .trial-banner b { font-size: 13px; } .trial-banner span { color: #c3d2d6; font-size: 11px; }
   `]
 })
 export class DashboardPageComponent {
@@ -46,6 +52,8 @@ export class DashboardPageComponent {
   readonly points$ = this.store.select(selectPoints)
   readonly anomalies$ = this.store.select(selectAnomalies)
   readonly dataset$ = this.store.select(selectDataset)
+  readonly trial$ = this.store.select(selectActiveTrial)
+  count(trial: { diffs: { diff: string }[] }, kind: string): number { return trial.diffs.filter((item) => item.diff === kind).length }
   readonly pointCount$ = this.points$.pipe(map((points) => points.length))
   readonly abnormalCount$ = this.points$.pipe(map((points) => points.filter((point) => point.status !== '正常').length))
   readonly openAnomalyCount$ = this.anomalies$.pipe(map((items) => items.filter((item) => item.status !== '已关闭').length))

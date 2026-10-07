@@ -34,11 +34,19 @@ export const seedDataset: TailingsDataset = {
       id: 'AN-260929-02', pointId: 'P-W01', title: '库水位短时上升速率超预警值', severity: '较高', status: '原因调查中', openedAt: '2026-09-29T08:00:00', owner: '库区调度班', triggerReadingId: 'RD-4', observedValue: '873.4 m，1小时上升0.6 m', version: 4, closedAt: '',
       fieldReviews: [], opinions: [{ id: 'OP-3', specialist: '许洁', discipline: '水文', content: '上游降雨汇流导致入湖量增加，需核实泄洪闸状态。', conclusion: '支持结论', createdAt: '2026-09-29T09:00:00' }],
       plan: { id: 'PL-2', action: '加密监测', owner: '库区调度班', deadline: '2026-09-29T14:00:00', conditions: '每小时记录水位与入库流量，达到874.0m时启动应急联动。', emergencyLinked: false, approvedBy: '', approvedAt: '' }
+    },
+    {
+      id: 'AN-260925-03', pointId: 'P-S01', title: '主坝S01渗流量短时超报警值', severity: '较高', status: '已关闭', openedAt: '2026-09-25T16:30:00', owner: '坝体安全组', triggerReadingId: 'RS-OLD', observedValue: '3.4 L/s（当时报警阈值3.0 L/s），复测回落至1.8 L/s', version: 6, closedAt: '2026-09-26T11:00:00',
+      fieldReviews: [{ id: 'FR-9', inspector: '宋立', arrivedAt: '2026-09-25T17:10:00', observed: 'S01量水堰短时浑水，排水沟无冲刷，坝坡未见渗流出口。', evidence: '量水堰读数照片、坝坡巡查记录', reassessment: '上游强降雨导致表层汇水干扰，复测持续回落，读数有效但趋势解除。', version: 3 }],
+      opinions: [{ id: 'OP-9', specialist: '周岩', discipline: '岩土', content: '渗流为降雨汇流干扰，坝体无渗透破坏迹象。', conclusion: '支持结论', createdAt: '2026-09-25T18:00:00' }],
+      plan: { id: 'PL-9', action: '疏通排水', owner: '坝体安全组', deadline: '2026-09-26T10:00:00', conditions: '连续两次复测渗流量低于2.2 L/s且水色澄清。', emergencyLinked: false, approvedBy: '负责人 何清', approvedAt: '2026-09-25T19:00:00' }
     }
   ],
   audit: [
     { id: 'A-1', entityId: 'P-D01', action: '生成异常', operator: '阈值引擎', detail: '累计位移18.7mm超过报警阈值16mm', createdAt: '2026-09-29T08:25:00' },
     { id: 'A-2', entityId: 'AN-260929-01', action: '提交现场复核', operator: '宋立', detail: '原始读数有效，位移趋势仍上升', createdAt: '2026-09-29T09:25:00' },
     { id: 'A-3', entityId: 'AN-260929-01', action: '补充专业意见', operator: '周岩', detail: '建议结合孔隙水压力分析潜在滑面', createdAt: '2026-09-29T10:20:00' }
-  ]
+  ],
+  releases: [],
+  readingVersion: 3
 }
