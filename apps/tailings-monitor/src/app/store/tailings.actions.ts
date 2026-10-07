@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store'
-import type { AuditEntry, DispositionPlan, ExpertOpinion, FieldReview, TailingsDataset } from '../domain'
+import type { AuditEntry, DispositionPlan, ExpertOpinion, FieldReview, RawReading, TailingsDataset } from '../domain'
 
 export const TailingsActions = createActionGroup({
   source: 'Tailings',
@@ -17,6 +17,10 @@ export const TailingsActions = createActionGroup({
     'Update Keyword': props<{ keyword: string }>(),
     'Update Status': props<{ status: string }>(),
     'Add Audit': props<{ entry: AuditEntry }>(),
+    'Propose Trial': props<{ thresholdId: string; warning: number; alarm: number; changeRate: number; operator: string }>(),
+    'Confirm Trial': props<{ batchId: string; simulateFailure: boolean }>(),
+    'Retry Trial': props<{ batchId: string }>(),
+    'Add Reading': props<{ reading: RawReading }>(),
     'Reset Demo': emptyProps()
   }
 })

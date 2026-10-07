@@ -6,9 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { MatInputModule } from '@angular/material/input'
 import { MatTableModule } from '@angular/material/table'
 import { Store } from '@ngrx/store'
-import { map } from 'rxjs'
+import { combineLatest, map, take } from 'rxjs'
 import { TailingsApiService } from '../services/tailings-api.service'
-import { selectDataset } from '../store/tailings.selectors'
+import { selectDataset, selectTrialBatches } from '../store/tailings.selectors'
 
 @Component({
   selector: 'app-audit-page',
@@ -39,11 +39,11 @@ export class AuditPageComponent {
   readonly columns = ['time', 'entity', 'action', 'operator', 'detail']
   readonly filtered$ = this.store.select(selectDataset).pipe(map((dataset) => dataset.audit.filter((item) => !this.keyword || `${item.entityId} ${item.action} ${item.operator} ${item.detail}`.includes(this.keyword))))
   exportPackage(): void {
-    this.store.select(selectDataset).subscribe((dataset) => {
-      this.api.exportPackage(dataset).subscribe((blob) => {
+    combineLatest([this.store.select(selectDataset), this.store.select(selectTrialBatches)]).pipe(take(1)).subscribe(([dataset, trialBatches]) => {
+      this.api.exportPackage({ ...dataset, trialBatches }).subscribe((blob) => {
         const url = URL.createObjectURL(blob)
         const anchor = document.createElement('a'); anchor.href = url; anchor.download = '尾矿库监测审阅包.json'; anchor.click(); URL.revokeObjectURL(url)
       })
-    }).unsubscribe()
+    })
   }
 }

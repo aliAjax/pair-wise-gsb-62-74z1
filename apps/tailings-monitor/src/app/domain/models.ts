@@ -94,6 +94,48 @@ export interface AuditEntry {
   createdAt: string
 }
 
+export type TrialChange = '新增' | '消失' | '升级' | '降级' | '维持'
+export type TrialBatchStatus = '待确认' | '已失效' | '已发布' | '部分失败'
+
+export interface TrialCandidate {
+  pointId: string
+  pointName: string
+  currentStatus: PointStatus
+  candidateStatus: PointStatus
+  change: TrialChange
+  readingId: string
+  readingValue: string
+  basis: string
+  applied: boolean
+}
+
+export interface ClosedAnomalyNote {
+  anomalyId: string
+  title: string
+  closedAt: string
+  basis: string
+  note: string
+}
+
+export interface TrialBatch {
+  id: string
+  thresholdId: string
+  type: MonitoringType
+  fromVersion: number
+  toVersion: number
+  proposal: { warning: number; alarm: number; changeRate: number }
+  snapshotAt: string
+  readingDigest: string
+  candidates: TrialCandidate[]
+  closedNotes: ClosedAnomalyNote[]
+  status: TrialBatchStatus
+  note: string
+  operator: string
+  createdAt: string
+  publishedAt: string
+  replacesId: string
+}
+
 export interface TailingsDataset {
   points: MonitoringPoint[]
   thresholds: Threshold[]

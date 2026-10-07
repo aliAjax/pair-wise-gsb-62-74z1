@@ -34,9 +34,16 @@ export const seedDataset: TailingsDataset = {
       id: 'AN-260929-02', pointId: 'P-W01', title: '库水位短时上升速率超预警值', severity: '较高', status: '原因调查中', openedAt: '2026-09-29T08:00:00', owner: '库区调度班', triggerReadingId: 'RD-4', observedValue: '873.4 m，1小时上升0.6 m', version: 4, closedAt: '',
       fieldReviews: [], opinions: [{ id: 'OP-3', specialist: '许洁', discipline: '水文', content: '上游降雨汇流导致入湖量增加，需核实泄洪闸状态。', conclusion: '支持结论', createdAt: '2026-09-29T09:00:00' }],
       plan: { id: 'PL-2', action: '加密监测', owner: '库区调度班', deadline: '2026-09-29T14:00:00', conditions: '每小时记录水位与入库流量，达到874.0m时启动应急联动。', emergencyLinked: false, approvedBy: '', approvedAt: '' }
+    },
+    {
+      id: 'AN-260927-01', pointId: 'P-D02', title: 'D02位移日变化速率短时超预警', severity: '关注', status: '已关闭', openedAt: '2026-09-27T09:05:00', owner: '坝体安全组', triggerReadingId: 'RD-0', observedValue: '10.8 mm，日变化3.4 mm/d（依据阈值版本V4）', version: 3, closedAt: '2026-09-27T16:40:00',
+      fieldReviews: [{ id: 'FR-0', inspector: '宋立', arrivedAt: '2026-09-27T10:00:00', observed: '降雨后瞬时位移，坝面无新增裂缝，基准点稳定。', evidence: '现场照片、雨量记录、GNSS观测文件', reassessment: '读数有效，降雨停止后速率回落。', version: 1 }],
+      opinions: [],
+      plan: { id: 'PL-0', action: '加密监测', owner: '坝体安全组', deadline: '2026-09-27T15:00:00', conditions: '速率连续6小时低于3mm/d后关闭。', emergencyLinked: false, approvedBy: '何清', approvedAt: '2026-09-27T11:00:00' }
     }
   ],
   audit: [
+    { id: 'A-0', entityId: 'AN-260927-01', action: '关闭异常', operator: '何清', detail: '速率回落，关闭条件满足（阈值版本V4）', createdAt: '2026-09-27T16:40:00' },
     { id: 'A-1', entityId: 'P-D01', action: '生成异常', operator: '阈值引擎', detail: '累计位移18.7mm超过报警阈值16mm', createdAt: '2026-09-29T08:25:00' },
     { id: 'A-2', entityId: 'AN-260929-01', action: '提交现场复核', operator: '宋立', detail: '原始读数有效，位移趋势仍上升', createdAt: '2026-09-29T09:25:00' },
     { id: 'A-3', entityId: 'AN-260929-01', action: '补充专业意见', operator: '周岩', detail: '建议结合孔隙水压力分析潜在滑面', createdAt: '2026-09-29T10:20:00' }
